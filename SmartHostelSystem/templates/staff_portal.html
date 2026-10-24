@@ -1,0 +1,66 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Staff Portal</h1>
+    <p>Manage student maintenance complaints.</p>
+
+    <div class="dashboard-cards">
+        <div class="card">
+            <h3>Total Complaints</h3>
+            <p>{{ total_count }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Pending</h3>
+            <p>{{ pending_count }}</p>
+        </div>
+
+        <div class="card">
+            <h3>In Progress</h3>
+            <p>{{ in_progress_count }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Solved</h3>
+            <p>{{ solved_count }}</p>
+        </div>
+    </div>
+
+    <h2>All Complaints</h2>
+
+    {% if complaints %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Branch</th>
+                    <th>Location</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>View</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for complaint in complaints %}
+                    <tr>
+                        <td>{{ complaint.title }}</td>
+                        <td>{{ complaint.branch }}</td>
+                        <td>{{ complaint.location }}</td>
+                        <td>{{ complaint.priority }}</td>
+                        <td>{{ complaint.status }}</td>
+                        <td>
+                            <a href="{% url 'complaint_detail' complaint.pk %}">
+                                View
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No complaints found.</p>
+    {% endif %}
+</div>
+{% endblock %}

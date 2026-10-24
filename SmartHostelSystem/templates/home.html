@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Smart Hostel Care{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">SMART HOSTEL MANAGEMENT</span>
+    <h1>Maintenance made <span>simple.</span></h1>
+    <p>Report hostel and campus issues, track progress, and keep every branch running smoothly.</p>
+    <div class="actions"><a class="btn" href="{% url 'login' %}">Login to portal</a><a class="btn btn-light" href="{% url 'register' %}">Student registration</a></div>
+  </div>
+  <div class="hero-art"><div class="big-icon">🏢</div><div class="floating-card">✓ Complaint tracking</div><div class="floating-card second">⚡ Faster maintenance</div></div>
+</section>
+<section class="feature-grid">
+  <article class="feature"><div class="feature-icon">🎓</div><h3>Student Portal</h3><p>Submit complaints and track their status.</p></article>
+  <article class="feature"><div class="feature-icon">🧰</div><h3>Staff Portal</h3><p>Manage assigned work and update progress.</p></article>
+  <article class="feature"><div class="feature-icon">📊</div><h3>Live Dashboard</h3><p>View Pending, In Progress and Resolved requests.</p></article>
+</section>
+{% endblock %}

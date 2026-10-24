@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Complaint #{{ complaint.id }}{% endblock %}
+{% block content %}
+<a class="back-link" href="{% url 'dashboard' %}">← Back to dashboard</a>
+<div class="page-heading"><div><span class="eyebrow">COMPLAINT #{{ complaint.id }}</span><h1>{{ complaint.title }}</h1><p>Reported {{ complaint.created_at|date:"d M Y, H:i" }}</p></div><span class="status large {{ complaint.status|slugify }}">{{ complaint.status }}</span></div>
+<div class="detail-grid">
+  <section class="panel detail-panel"><h2>Complaint information</h2>
+    <dl>
+      <dt>Student</dt><dd>{{ complaint.student.username }}</dd>
+      <dt>Branch</dt><dd>{{ complaint.branch.name }}</dd>
+      <dt>Location</dt><dd>{{ complaint.location }}</dd>
+      {% if complaint.room_number %}<dt>Room number</dt><dd>{{ complaint.room_number }}</dd>{% endif %}
+      <dt>Category</dt><dd>{{ complaint.category }}</dd><dt>Priority</dt><dd>{{ complaint.priority }}</dd>
+      <dt>Description</dt><dd>{{ complaint.description }}</dd>
+      <dt>Assigned staff</dt><dd>{{ complaint.assigned_staff.username|default:"Not assigned" }}</dd>
+      <dt>Staff remarks</dt><dd>{{ complaint.staff_remarks|default:"No remarks yet" }}</dd>
+      {% if complaint.photo %}<dt>Photo</dt><dd><a href="{{ complaint.photo.url }}" target="_blank">View uploaded photo</a></dd>{% endif %}
+    </dl>
+  </section>
+  {% if status_form %}<section class="panel detail-panel"><h2>Update complaint</h2><p>Staff/Admin can update status and add remarks.</p>
+    <form method="post" class="stack-form">{% csrf_token %}
+      {% for field in status_form %}<div class="field"><label>{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="error">{{ error }}</small>{% endfor %}</div>{% endfor %}
+      <button class="btn full" type="submit">Save changes</button>
+    </form>
+  </section>{% endif %}
+</div>
+{% endblock %}

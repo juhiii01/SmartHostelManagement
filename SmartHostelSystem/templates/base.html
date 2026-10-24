@@ -1,0 +1,30 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Smart Hostel Care{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{% url 'home' %}">🏠 Smart Hostel Care</a>
+  <nav>
+    {% if user.is_authenticated %}
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+      {% if not user.is_staff and not user.is_superuser %}<a href="{% url 'new_complaint' %}">New Complaint</a>{% endif %}
+      {% if user.is_staff or user.is_superuser %}<a href="/admin/">Admin</a>{% endif %}
+      <span class="user-label">{{ user.username }}</span>
+      <form class="logout-form" method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="link-button">Logout</button></form>
+    {% else %}
+      <a href="{% url 'login' %}">Login</a><a href="{% url 'register' %}">Student Register</a>
+    {% endif %}
+  </nav>
+</header>
+<main class="container">
+  {% if messages %}{% for message in messages %}<div class="message">{{ message }}</div>{% endfor %}{% endif %}
+  {% block content %}{% endblock %}
+</main>
+<footer>Smart Hostel Management &amp; Maintenance System · College Project</footer>
+<script src="{% static 'js/app.js' %}"></script>
+</body></html>

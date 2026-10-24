@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><span class="eyebrow">OVERVIEW</span><h1>{% if is_staff_user %}Staff &amp; Admin Dashboard{% else %}My Complaints{% endif %}</h1><p>Track maintenance requests across your branch.</p></div>
+  {% if not is_staff_user %}<a class="btn" href="{% url 'new_complaint' %}">＋ New Complaint</a>{% endif %}
+</div>
+<section class="stats">
+  <a class="stat-card {% if tab == 'All' %}selected{% endif %}" href="{% url 'dashboard' %}"><span class="stat-symbol blue">▤</span><span class="stat-label">Total Complaints</span><strong>{{ counts.total }}</strong></a>
+  <a class="stat-card {% if tab == 'Resolved' %}selected{% endif %}" href="?status=Resolved"><span class="stat-symbol green">✓</span><span class="stat-label">Solved Complaints</span><strong>{{ counts.resolved }}</strong></a>
+  <a class="stat-card {% if tab == 'Pending' %}selected{% endif %}" href="?status=Pending"><span class="stat-symbol orange">◷</span><span class="stat-label">Pending</span><strong>{{ counts.pending }}</strong></a>
+  <a class="stat-card {% if tab == 'In Progress' %}selected{% endif %}" href="?status=In%20Progress"><span class="stat-symbol purple">⚙</span><span class="stat-label">In Progress</span><strong>{{ counts.progress }}</strong></a>
+</section>
+<section class="panel">
+  <div class="panel-head"><div><h2>{% if tab == 'All' %}All Complaints{% else %}{{ tab }} Complaints{% endif %}</h2><p>Click a complaint to view details.</p></div><span class="count-pill">{{ complaints|length }} shown</span></div>
+  <div class="table-wrap"><table><thead><tr><th>ID / Issue</th><th>Branch</th><th>Location</th><th>Priority</th><th>Status</th><th>Reported</th></tr></thead><tbody>
+  {% for c in complaints %}
+    <tr class="click-row" data-href="{% url 'complaint_detail' c.id %}">
+      <td><strong>#{{ c.id }} · {{ c.title }}</strong><small>By {{ c.student.username }}</small></td>
+      <td>{{ c.branch.name }}</td><td>{{ c.location }}{% if c.room_number %}<small>Room {{ c.room_number }}</small>{% endif %}</td>
+      <td><span class="priority {{ c.priority|lower }}">{{ c.priority }}</span></td>
+      <td><span class="status {{ c.status|slugify }}">{{ c.status }}</span></td><td>{{ c.created_at|date:"d M, H:i" }}</td>
+    </tr>
+  {% empty %}<tr><td colspan="6" class="empty">No complaints found for this tab. Submit a new complaint to get started.</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+{% endblock %}
